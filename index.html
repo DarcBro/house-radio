@@ -4,7 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Хаус Лофт Радио</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <!-- Иконка для браузеров -->
+  <link rel="icon" href="icons/icon-192.png" />
+  <!-- Метатеги для мобильных -->
+  <meta name="theme-color" content="#f28b82" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Хаус Лофт Радио" />
+
   <style>
+    /* ...твой CSS без изменений... */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: linear-gradient(135deg, #fdfaf6, #f1f1f1);
@@ -38,7 +51,6 @@
       transform: scale(1.1);
       box-shadow: 0 12px 24px rgba(0,0,0,0.2);
     }
-    /* фиксированный размер кнопок */
     #prev-btn,
     #next-btn {
       width: 50px; height: 50px; border-radius: 50%;
@@ -84,13 +96,11 @@
   <div class="station-name" id="station-name">Хаус 1</div>
   <div class="controls">
     <button id="prev-btn" title="Назад">
-      <!-- SVG «Назад» -->
       <svg class="icon" viewBox="0 0 24 24">
         <path d="M12.83 3.87L14.25 5.29 9.33 10.21H21v1.58H9.33l4.92 4.92-1.42 1.42L4.5 12z"/>
       </svg>
     </button>
     <button id="play-btn" title="Play/Pause">
-      <!-- SVG «Play» (заменим на Pause при паузе через JS) -->
       <svg class="icon" viewBox="0 0 24 24" id="play-icon">
         <path d="M8 5v14l11-7z"/>
       </svg>
@@ -99,7 +109,6 @@
       </svg>
     </button>
     <button id="next-btn" title="Вперед">
-      <!-- SVG «Вперед» -->
       <svg class="icon" viewBox="0 0 24 24">
         <path d="M11.67 3.87L10.25 5.29 15.17 10.21H3v1.58h12.17l-4.92 4.92 1.42 1.42L19.5 12z"/>
       </svg>
@@ -160,6 +169,15 @@
     // инициализация
     loadStation(0);
     audio.volume = volumeSlider.value / 100;
+
+    // Регистрация сервис-воркера
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service Worker зарегистрирован', reg))
+          .catch(err => console.error('Service Worker не зарегистрирован', err));
+      });
+    }
   </script>
 </body>
 </html>
