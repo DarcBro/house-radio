@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Хаус Лофт Радио</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(135deg, #fdfaf6, #f1f1f1);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+    }
+    .play-button {
+      background: linear-gradient(145deg, #f28b82, #f6b4a5);
+      border: none;
+      color: white;
+      font-size: 2.2rem;
+      padding: 20px 50px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+      z-index: 2;
+    }
+    .play-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.2);
+    }
+    .subtitle {
+      margin-top: 25px;
+      font-size: 1.4rem;
+      color: #666;
+      text-align: center;
+      z-index: 2;
+    }
+    .flower-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* фиксированное фото цветов в стиле «лофт» 1920×1080 */
+  background-image: url('https://images.unsplash.com/photo-1639769000857-6f9704a6ae34?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+    .leaf {
+      position: absolute;
+      font-size: 60px;
+      opacity: 0.2;
+      animation: floatLeaf 15s infinite linear;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .leaf:nth-of-type(1) { top: -60px; left: 5%; animation-delay: 0s; }
+    .leaf:nth-of-type(2) { top: -70px; left: 10%; animation-delay: 2s; }
+    .leaf:nth-of-type(3) { top: -70px; left: 80%; animation-delay: 5s; }
+	.leaf:nth-of-type(4) { top: -70px; left: 40%; animation-delay: 7s; }
+	.leaf:nth-of-type(5) { top: -70px; left: 70%; animation-delay: 9s; }
+	.leaf:nth-of-type(6) { top: -70px; left: 30%; animation-delay: 11s; }
+    @keyframes floatLeaf {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(120vh) rotate(360deg); }
+    }
+    @media (max-width: 600px) {
+      .play-button { font-size: 1.6rem; padding: 15px 30px; }
+      .subtitle   { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="flower-bg"></div>
+
+  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div>
+
+  <button class="play-button" onclick="togglePlay()">PLAY</button>
+  <div class="subtitle">Хаус-волна в эфире</div>
+
+  <audio id="radio"
+         src="https://54house.fm:9013/autodj"
+         preload="none">
+    Ваш браузер не поддерживает аудио.
+  </audio>
+
+  <script>
+    const audio = document.getElementById('radio');
+    let isPlaying = false;
+    function togglePlay() {
+      if (!isPlaying) {
+        audio.play().catch(e => console.error(e));
+        isPlaying = true;
+      } else {
+        audio.pause();
+        isPlaying = false;
+      }
+    }
+  </script>
+</body>
+</html>
