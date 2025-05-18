@@ -29,20 +29,25 @@
     }
     .controls button {
       background: linear-gradient(145deg, #f28b82, #f6b4a5);
-      border: none; color: white; font-size: 1.5rem;
-      width: 50px; height: 50px;
-      border-radius: 50%; cursor: pointer;
+      border: none; padding: 0; cursor: pointer;
       box-shadow: 0 8px 16px rgba(0,0,0,0.1);
       transition: transform .2s, box-shadow .2s;
+      display: flex; align-items: center; justify-content: center;
     }
     .controls button:hover {
       transform: scale(1.1);
       box-shadow: 0 12px 24px rgba(0,0,0,0.2);
     }
-    .play-button {
-      width: 90px; font-size: 1.2rem;
-      border-radius: 40px;
-      padding: 0 10px;
+    /* фиксированный размер кнопок */
+    #prev-btn,
+    #next-btn {
+      width: 50px; height: 50px; border-radius: 50%;
+    }
+    #play-btn {
+      width: 60px; height: 60px; border-radius: 50%;
+    }
+    svg.icon {
+      width: 60%; height: 60%; fill: white;
     }
     #volume-slider {
       width: 120px; cursor: pointer; margin-left: 20px;
@@ -64,27 +69,41 @@
     }
     @media (max-width: 600px) {
       .station-name { font-size: 1.2rem; }
-      .controls button { width: 40px; height: 40px; font-size: 1rem; }
-      .play-button { width: 70px; font-size: 1rem; }
+      #prev-btn, #next-btn { width: 40px; height: 40px; }
+      #play-btn { width: 50px; height: 50px; }
+      svg.icon { width: 70%; height: 70%; }
       #volume-slider { width: 100px; margin-left: 10px; }
     }
   </style>
 </head>
 <body>
   <div class="flower-bg"></div>
-  <div class="leaf">🍃</div>
-  <div class="leaf">🍃</div>
-  <div class="leaf">🍃</div>
-  <div class="leaf">🍃</div>
-  <div class="leaf">🍃</div>
-  <div class="leaf">🍃</div>
+  <div class="leaf">🍃</div><div class="leaf">🍃</div><div class="leaf">🍃</div>
+  <div class="leaf">🍃</div><div class="leaf">🍃</div><div class="leaf">🍃</div>
 
   <div class="station-name" id="station-name">Хаус 1</div>
-
   <div class="controls">
-    <button id="prev-btn" title="Назад">⏮︎</button>
-    <button id="play-btn" class="play-button">▶</button>
-    <button id="next-btn" title="Вперед">⏭︎</button>
+    <button id="prev-btn" title="Назад">
+      <!-- SVG «Назад» -->
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M12.83 3.87L14.25 5.29 9.33 10.21H21v1.58H9.33l4.92 4.92-1.42 1.42L4.5 12z"/>
+      </svg>
+    </button>
+    <button id="play-btn" title="Play/Pause">
+      <!-- SVG «Play» (заменим на Pause при паузе через JS) -->
+      <svg class="icon" viewBox="0 0 24 24" id="play-icon">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <svg class="icon" viewBox="0 0 24 24" id="pause-icon" style="display:none">
+        <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
+      </svg>
+    </button>
+    <button id="next-btn" title="Вперед">
+      <!-- SVG «Вперед» -->
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M11.67 3.87L10.25 5.29 15.17 10.21H3v1.58h12.17l-4.92 4.92 1.42 1.42L19.5 12z"/>
+      </svg>
+    </button>
     <input type="range" id="volume-slider" min="0" max="100" value="20" step="1" aria-label="Громкость">
   </div>
 
@@ -105,43 +124,41 @@
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const volumeSlider = document.getElementById('volume-slider');
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
     let isPlaying = false;
 
-    function loadStation(index) {
-      current = (index + stations.length) % stations.length;
+    function loadStation(idx) {
+      current = (idx + stations.length) % stations.length;
       audio.src = stations[current].url;
       stationNameEl.textContent = stations[current].name;
-      if (isPlaying) {
-        audio.play().catch(e=>console.error(e));
-      }
+      if (isPlaying) audio.play().catch(e=>console.error(e));
     }
 
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
         audio.play().then(() => {
           isPlaying = true;
-          playBtn.textContent = '⏸';
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
         }).catch(e => console.error(e));
       } else {
         audio.pause();
         isPlaying = false;
-        playBtn.textContent = '▶';
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
       }
     });
 
-    prevBtn.addEventListener('click', () => {
-      loadStation(current - 1);
-    });
-    nextBtn.addEventListener('click', () => {
-      loadStation(current + 1);
-    });
+    prevBtn.addEventListener('click', () => loadStation(current - 1));
+    nextBtn.addEventListener('click', () => loadStation(current + 1));
 
     volumeSlider.addEventListener('input', () => {
       audio.volume = volumeSlider.value / 100;
     });
 
-    // стартовое
-    loadStation(current);
+    // инициализация
+    loadStation(0);
     audio.volume = volumeSlider.value / 100;
   </script>
 </body>
