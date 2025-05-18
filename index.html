@@ -5,85 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Хаус Лофт Радио</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: linear-gradient(135deg, #fdfaf6, #f1f1f1);
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      height: 100vh; overflow: hidden; position: relative;
       padding: 20px;
     }
-    .play-button {
-      background: linear-gradient(145deg, #f28b82, #f6b4a5);
-      border: none;
-      color: white;
-      font-size: 2.2rem;
-      padding: 20px 50px;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-      z-index: 2;
-    }
-    .play-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.2);
-    }
-    .subtitle {
-      margin-top: 25px;
-      font-size: 1.4rem;
-      color: #666;
-      text-align: center;
-      z-index: 2;
-    }
     .flower-bg {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  /* фиксированное фото цветов в стиле «лофт» 1920×1080 */
-  background-image: url('https://images.unsplash.com/photo-1639769000857-6f9704a6ae34?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.3;
-  z-index: 0;
-}
-
-    .leaf {
-      position: absolute;
-      font-size: 60px;
-      opacity: 0.2;
-      animation: floatLeaf 15s infinite linear;
-      pointer-events: none;
-      z-index: 1;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://images.unsplash.com/photo-1639769000857-6f9704a6ae34?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+      background-repeat: no-repeat; background-size: cover;
+      background-position: center; opacity: 0.3; z-index: 0;
     }
-    .leaf:nth-of-type(1) { top: -60px; left: 5%; animation-delay: 0s; }
-    .leaf:nth-of-type(2) { top: -70px; left: 10%; animation-delay: 2s; }
+    .station-name {
+      font-size: 1.5rem; color: #333;
+      margin-bottom: 20px; z-index: 2;
+    }
+    .controls {
+      display: flex; align-items: center; gap: 15px; z-index: 2;
+    }
+    .controls button {
+      background: linear-gradient(145deg, #f28b82, #f6b4a5);
+      border: none; color: white; font-size: 1.5rem;
+      width: 50px; height: 50px;
+      border-radius: 50%; cursor: pointer;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .controls button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+    .play-button {
+      width: 90px; font-size: 1.2rem;
+      border-radius: 40px;
+      padding: 0 10px;
+    }
+    #volume-slider {
+      width: 120px; cursor: pointer; margin-left: 20px;
+    }
+    .leaf {
+      position: absolute; font-size: 60px;
+      opacity: 0.2; animation: floatLeaf 15s infinite linear;
+      pointer-events: none; z-index: 1;
+    }
+    .leaf:nth-of-type(1) { top: -60px; left: 5%; }
+    .leaf:nth-of-type(2) { top: -70px; left: 20%; animation-delay: 2s; }
     .leaf:nth-of-type(3) { top: -70px; left: 80%; animation-delay: 5s; }
-	.leaf:nth-of-type(4) { top: -70px; left: 40%; animation-delay: 7s; }
-	.leaf:nth-of-type(5) { top: -70px; left: 70%; animation-delay: 9s; }
-	.leaf:nth-of-type(6) { top: -70px; left: 30%; animation-delay: 11s; }
+    .leaf:nth-of-type(4) { top: -70px; left: 40%; animation-delay: 7s; }
+    .leaf:nth-of-type(5) { top: -70px; left: 70%; animation-delay: 9s; }
+    .leaf:nth-of-type(6) { top: -70px; left: 30%; animation-delay: 11s; }
     @keyframes floatLeaf {
-      0%   { transform: translateY(0) rotate(0deg); }
+      0% { transform: translateY(0) rotate(0deg); }
       100% { transform: translateY(120vh) rotate(360deg); }
     }
     @media (max-width: 600px) {
-      .play-button { font-size: 1.6rem; padding: 15px 30px; }
-      .subtitle   { font-size: 1.1rem; }
+      .station-name { font-size: 1.2rem; }
+      .controls button { width: 40px; height: 40px; font-size: 1rem; }
+      .play-button { width: 70px; font-size: 1rem; }
+      #volume-slider { width: 100px; margin-left: 10px; }
     }
   </style>
 </head>
 <body>
   <div class="flower-bg"></div>
-
   <div class="leaf">🍃</div>
   <div class="leaf">🍃</div>
   <div class="leaf">🍃</div>
@@ -91,27 +79,70 @@
   <div class="leaf">🍃</div>
   <div class="leaf">🍃</div>
 
-  <button class="play-button" onclick="togglePlay()">PLAY</button>
-  <div class="subtitle">Хаус-волна в эфире</div>
+  <div class="station-name" id="station-name">Хаус 1</div>
 
-  <audio id="radio"
-         src="https://54house.fm:9013/autodj"
-         preload="none">
-    Ваш браузер не поддерживает аудио.
-  </audio>
+  <div class="controls">
+    <button id="prev-btn" title="Назад">⏮︎</button>
+    <button id="play-btn" class="play-button">▶</button>
+    <button id="next-btn" title="Вперед">⏭︎</button>
+    <input type="range" id="volume-slider" min="0" max="100" value="20" step="1" aria-label="Громкость">
+  </div>
+
+  <audio id="radio" preload="none"></audio>
 
   <script>
+    const stations = [
+      { name: 'Хаус 1', url: 'https://54house.fm:9013/autodj' },
+      { name: 'Хаус 2', url: 'https://stream.technolovers.fm/dirty-house' },
+      { name: 'Хаус 3', url: 'https://mp3.stream.tb-group.fm/clt.mp3' },
+      { name: 'Хаус 4', url: 'https://mediaserv38.live-streams.nl:18048/stream' },
+      { name: 'Lo-fi',   url: 'https://stream.laut.fm/lofi' }
+    ];
+    let current = 0;
     const audio = document.getElementById('radio');
+    const stationNameEl = document.getElementById('station-name');
+    const playBtn = document.getElementById('play-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const volumeSlider = document.getElementById('volume-slider');
     let isPlaying = false;
-    function togglePlay() {
+
+    function loadStation(index) {
+      current = (index + stations.length) % stations.length;
+      audio.src = stations[current].url;
+      stationNameEl.textContent = stations[current].name;
+      if (isPlaying) {
+        audio.play().catch(e=>console.error(e));
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        audio.play().catch(e => console.error(e));
-        isPlaying = true;
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtn.textContent = '⏸';
+        }).catch(e => console.error(e));
       } else {
         audio.pause();
         isPlaying = false;
+        playBtn.textContent = '▶';
       }
-    }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      loadStation(current - 1);
+    });
+    nextBtn.addEventListener('click', () => {
+      loadStation(current + 1);
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      audio.volume = volumeSlider.value / 100;
+    });
+
+    // стартовое
+    loadStation(current);
+    audio.volume = volumeSlider.value / 100;
   </script>
 </body>
 </html>
