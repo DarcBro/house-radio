@@ -1,0 +1,21 @@
+{
+    "name": "Хаус Лофт Радио",
+    "short_name": "Хаус Радио",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fdfaf6",
+    "theme_color": "#f28b82",
+    "description": "Онлайн радио в стиле хаус и lo-fi.",
+    "icons": [
+      {
+        "src": "icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }  
